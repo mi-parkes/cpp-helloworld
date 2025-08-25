@@ -15,12 +15,12 @@ PROJECT=helloworld
 all:
 	rm -rf $(ROOTODIR) $(INSTALLDIR)
 	mkdir -p $(ODIR)
-	rm -rf $(ODIR)/* 
 
 	echo "Configuring '$(PROJECT)' Build Process"
 	cmake -S $(CURDIR) -B $(ODIR) \
 		-DCMAKE_INSTALL_PREFIX=$(INSTALLDIR) \
-		$(if $(SHARED),-DBUILD_SHARED_LIBS=ON,)
+		$(if $(SHARED),-DBUILD_SHARED_LIBS=ON,) \
+		$(if $(CXX_STANDARD),-DCMAKE_CXX_STANDARD=$(CXX_STANDARD),)
 
 	echo "Building '$(PROJECT)"
 	cmake --build $(ODIR) --target install
@@ -36,11 +36,11 @@ test:
 
 	rm -rf $(ROOTODIR)
 	mkdir -p $(ODIR)
-	rm -rf $(ODIR)/*
 
 	echo "Configuring '$(PROJECT)' Build Process"
 	cmake -S $(CURDIR) -B $(ODIR) \
-		$(if $(SHARED),-DBUILD_SHARED_LIBS=ON,)
+		$(if $(SHARED),-DBUILD_SHARED_LIBS=ON,) \
+		$(if $(CXX_STANDARD),-DCMAKE_CXX_STANDARD=$(CXX_STANDARD),)
 
 	echo "Building '$(PROJECT)"
 	cmake --build $(ODIR)
