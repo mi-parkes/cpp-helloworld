@@ -31,17 +31,19 @@ test:
 	$(eval ROOTODIR=/tmp/hellworld-test)
 	$(eval ODIR=$(ROOTODIR)/build)
 	$(eval PROJECT=hellworld-test)
-
-	cd test
+	$(eval SDIR=$(CURDIR)/test)
+	$(eval INSTALLDIR=$(ROOTODIR)/install)
 
 	rm -rf $(ROOTODIR)
 	mkdir -p $(ODIR)
 
 	echo "Configuring '$(PROJECT)' Build Process"
-	cmake -S $(CURDIR) -B $(ODIR) \
+	cmake -S $(SDIR) -B $(ODIR) \
+		-DCMAKE_INSTALL_PREFIX=$(INSTALLDIR) \
 		$(if $(SHARED),-DBUILD_SHARED_LIBS=ON,) \
 		$(if $(CXX_STANDARD),-DCMAKE_CXX_STANDARD=$(CXX_STANDARD),)
 
 	echo "Building '$(PROJECT)"
-	cmake --build $(ODIR)
-	$(ODIR)/app/hello_app
+	cmake --build $(ODIR) --target install
+	ls -l $(ODIR)/my_app
+	$(ODIR)/my_app
